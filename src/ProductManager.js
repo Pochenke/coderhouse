@@ -39,8 +39,33 @@ class ProductManager {
         try {
             const data = await this.readFile();
             this.products = JSON.parse(data);
+            const product = this.products.find((product) => product.id === id);
+            return product;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    async updateProduct(id, product) {
+        try{
+            const data = await this.readFile();
+            this.products = JSON.parse(data);
+
             const index = this.products.findIndex((product) => product.id === id);
             this.products[index] = product;
+            await this.writeFile(this.products);
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    async deleteProduct(id){
+        try{
+            const data = await this.readFile();
+            this.products = JSON.parse(data);
+
+            const index = this.products.findIndex((product) => product.id === id);
+            this.products.splice(index, 1);
             await this.writeFile(this.products);
         } catch (err) {
             throw err;

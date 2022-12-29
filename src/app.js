@@ -18,7 +18,7 @@ app.get("/", (req, res) => {
     res.send("Hello world!");
 })
 
-app.get("/productos", async (req, res) => {
+app.get("/products", async (req, res) => {
     try {
         const products = await productManager.getProducts();
         const limit = req.query.limit;
@@ -33,12 +33,11 @@ app.get("/productos", async (req, res) => {
     }
 });
 
-app.post("/productos", async (req, res) => {
+app.get("/products/:pid", async (req, res) => {
     try {
-        const products = await productManager.getProducts();
-        const newProduct = req.body;
-        await productManager.addProduct(products, newProduct);
-        res.send(newProduct);
+        const requestedId = parseInt(req.params.pid);
+        const requestedProduct = await productManager.getProductById(requestedId);
+        res.send(requestedProduct);
     } catch (err) {
         res.status(500).send(err.message);
     }
@@ -46,4 +45,8 @@ app.post("/productos", async (req, res) => {
 
 app.listen(port, () => {
     console.log(`Servidor iniciado en el puerto ${port}`);
-})
+});
+
+
+let a = await productManager.getProductById(3);
+console.log(a, 'a');
